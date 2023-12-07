@@ -1,0 +1,22 @@
+.navBarBody {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: rgba(47, 6, 197, 0.808);
+}
+
+.navBarButtons{
+    display: flex;
+    justify-content: space-between;
+}
+
+.navBarButtons a{
+    display: flex;
+    justify-content: space-between;
+    margin-right: 5px;
+    text-decoration: none;
+}
+
+.navBarImg{
+    margin: 5px;
+}

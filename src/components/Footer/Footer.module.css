@@ -1,0 +1,11 @@
+.FooterBody{
+    background-color:  rgba(47, 6, 197, 0.808);
+    color: white;
+    padding: 20px;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
