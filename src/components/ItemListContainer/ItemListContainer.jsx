@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../config/firebaseConfig";
 import Typography from '@mui/material/Typography';
-import { getProducts } from "../../async-mocks";
 import { ItemList } from "../ItemList/ItemList";
 import { useParams } from "react-router-dom";
 import Alert from '@mui/material/Alert';
@@ -29,10 +28,8 @@ export const ItemListContainer = ({ message }) => {
             if(itemsList.length === 0){
                 setNoResults(true);
                 setIsLoading(false);
-                console.log(itemsList);
             }else{
                 setProducts(itemsList);
-                console.log(itemsList);
                 setIsLoading(false);
             }
         });

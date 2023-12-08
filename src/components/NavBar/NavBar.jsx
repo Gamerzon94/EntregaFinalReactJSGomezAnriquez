@@ -1,10 +1,28 @@
-import * as React from 'react';
+import { useEffect, useState } from "react";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../../config/firebaseConfig";
 import { Button } from '@mui/material';
 import { CardWidget } from '../CardWidget/CardWidget';
 import styles from './NavBar.module.css'
 import { Link } from "react-router-dom";
 
 export const NavBar = () => {
+    const [categories, setCategories] = useState([]);
+
+    const getCategories = () => {
+        const myCategories =  query(collection(db, "categories"));
+            
+        getDocs(myCategories).then((resp) =>{ 
+            const categoriesList = resp.docs.map( doc => ( { id: doc.id, ...doc.data() } ) )
+            setCategories(categoriesList);
+        });
+        
+    };
+
+    useEffect(() => {
+        getCategories();
+    },[]);
+
     return (
         <nav>
             <div className={styles.navBarBody}> 
@@ -15,18 +33,11 @@ export const NavBar = () => {
                     <Link to={"/"}>
                         <Button variant="contained">Inicio</Button>
                     </Link>
-                    <Link to={"/category/oficina"}>
-                        <Button variant="contained">Articulos de Oficina</Button>
-                    </Link>
-                    <Link to={"/category/transporte"}>
-                        <Button variant="contained">Servicios de Transporte</Button>
-                    </Link>
-                    <Link to={"/category/espacio"}>
-                        <Button variant="contained">Servicios Espaciales</Button>
-                    </Link>
-                    <Link to={"/category/dron"}>
-                        <Button variant="contained">Drones</Button>
-                    </Link>
+                    {categories.map((categorie) => (
+                        <Link to={`/category/${categorie.name}`}  key={categorie.id}>
+                            <Button variant="contained">{categorie.description}</Button>
+                        </Link> ))
+                    }
                 </div>
                 <CardWidget/>
             </div>
