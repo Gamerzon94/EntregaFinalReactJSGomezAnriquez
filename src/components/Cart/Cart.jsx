@@ -100,7 +100,7 @@ export const Cart = () => {
               <TextField id="email" type={"email"} name="email" label="Correo electrónico" value={formData.email} onChange={handleChange} fullWidth margin="normal" variant="outlined" required/>
               {emailError && <span style={{ color: 'red' }}>{emailError}</span>}
               <TextField id="confirmarEmail" type={"email"} name="confirmarEmail" label="Confirmar correo electrónico" value={formData.confirmarEmail} onChange={handleChange} fullWidth margin="normal" variant="outlined" required/>
-              <Button variant="contained" type="submit" disabled={totalProducts === 0}>Enviar</Button>
+              <Button variant="contained" type="submit" disabled={totalProducts === 0}>Realizar Compra</Button>
             </form>
           </Box>
           </Container>
