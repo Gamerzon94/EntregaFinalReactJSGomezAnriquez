@@ -10,7 +10,6 @@ import LinearProgress from '@mui/material/LinearProgress';
 
 export const ItemListContainer = ({ message }) => {
     const { category } = useParams();
-    console.log(category);
 
     const [products, setProducts] = useState([]);
 

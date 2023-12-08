@@ -1,6 +1,6 @@
-import { useEffect } from "react";
-import { useState } from "react";
-import { getProduct } from "../../async-mocks";
+import { useEffect, useState } from "react";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../config/firebaseConfig";
 import { ItemDetail } from "../ItemDetail/ItemDetail";
 import { useParams } from "react-router-dom";
 import Alert from '@mui/material/Alert';
@@ -14,20 +14,29 @@ export const ItemDetailContainer = () => {
 
     const { id } = useParams();
 
+    const getItemDB = async  (id) => {
+        const itemRef = doc(db, "items", id);
+        try {
+            const docSnap = await getDoc(itemRef);
+            if (docSnap.exists()) {
+                const itemData = { id: docSnap.id, ...docSnap.data() };
+                setProduct(itemData);
+                setLoading(false);
+            } else {
+                setError(true);
+                setLoading(false);
+            }
+        } catch (error) {
+            setError(true);
+            setLoading(false);
+        }
+    };
+
     useEffect( () => { 
         setLoading(true);
         setError(null);
-        getProduct(id)
-            .then( resp => {
-                setProduct(resp);
-                setLoading(false);
-            })
-            .catch(err => {
-                setError(true);
-                setLoading(false);
-                console.log(err);
-            });
-    }, [product])
+        getItemDB(id);
+    }, [id])
     return (
         <div>
             {loading && <><Alert variant="filled" severity="info">Cargando producto</Alert><LinearProgress /></>}

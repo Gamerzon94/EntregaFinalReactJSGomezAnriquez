@@ -1,4 +1,4 @@
-const products = [
+/*const products = [
     {
         id: "1",
         name: 'Lápiz JCJenson',
@@ -114,4 +114,4 @@ const products = [
                 }
             }, 2000 )
         });
-    };
+    };*/
