@@ -1,9 +1,10 @@
-import * as React from 'react'
+import { useContext } from "react";
 import Badge from '@mui/material/Badge'
 import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import styles from './CardWidget.module.css'
+import { CartContext } from '../../context/CartContext'
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
@@ -15,11 +16,12 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   }));
 
 export const CardWidget = () => {
+    const { totalProducts } = useContext(CartContext);
     return (
         <>
             <div className={styles.CardWidgetBody}>
                 <IconButton aria-label="cart" href="/cart">
-                    <StyledBadge badgeContent={10} color="secondary">
+                    <StyledBadge badgeContent={totalProducts} color="secondary">
                         <ShoppingCartIcon />
                     </StyledBadge>
                 </IconButton>

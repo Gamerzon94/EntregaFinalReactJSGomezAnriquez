@@ -2,15 +2,22 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Link } from "react-router-dom";
 import { Button, CardActionArea, CardActions, Box } from '@mui/material';
 import { useCount } from '../../hooks';
+import { useContext } from 'react';
+import { CartContext } from '../../context/CartContext';
 
 export const ItemDetail = ( {id, description, price, stock, name, img, imageDescription} ) => {
 
     const { increment, decrement, count } = useCount(0, stock);
 
+    const { addProductCart } = useContext(CartContext);
+    const { cart, total, removeProduct } = useContext(CartContext);
+
+
+
     return (
+        <>
         <Card key={id} sx={{ maxWidth: 345 }}>
             <CardActionArea>
                 <CardMedia
@@ -40,12 +47,11 @@ export const ItemDetail = ( {id, description, price, stock, name, img, imageDesc
                     <Button onClick={decrement}>-</Button>
                 </Box>
             <CardActions>
-                <Link to={`/cart`}>
-                    <Button size="small" color="primary">
+                <Button size="small" color="primary" onClick={() => addProductCart( {id, name, price}, count )}>
                     Comprar
-                    </Button>
-                </Link>
+                </Button>
             </CardActions>
         </Card>
+        </>
     )
     }
