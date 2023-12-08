@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../../config/firebaseConfig";
 import Typography from '@mui/material/Typography';
 import { getProducts } from "../../async-mocks";
 import { ItemList } from "../ItemList/ItemList";
@@ -9,6 +11,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 
 export const ItemListContainer = ({ message }) => {
     const { category } = useParams();
+    console.log(category);
 
     const [products, setProducts] = useState([]);
 
@@ -16,24 +19,30 @@ export const ItemListContainer = ({ message }) => {
 
     const [noResults, setNoResults] = useState(false);
 
+    const getItemsDB = (category) => {
+        const myItems = category
+            ? query(collection(db, "items"), where("category","==", category))
+            : query(collection(db, "items"));
+            
+        getDocs(myItems).then((resp) =>{ 
+            const itemsList = resp.docs.map( doc => ( { id: doc.id, ...doc.data() } ) )
+            if(itemsList.length === 0){
+                setNoResults(true);
+                setIsLoading(false);
+                console.log(itemsList);
+            }else{
+                setProducts(itemsList);
+                console.log(itemsList);
+                setIsLoading(false);
+            }
+        });
+        
+    };
+
     useEffect(() => {
         setIsLoading(true);
         setNoResults(false);
-        getProducts()
-            .then((resp) => {
-                if(category) {
-                    const productsFilter = resp.filter(product => product.category === category);
-                    setProducts(productsFilter);
-                    setIsLoading(false);
-                    if (productsFilter.length === 0) {
-                        setNoResults(true);
-                    }
-                } else {
-                    setProducts(resp);
-                    setIsLoading(false);
-                }
-            })
-            .catch((error) => console.log(error));
+        getItemsDB(category);
     }, [category]);
 
 
