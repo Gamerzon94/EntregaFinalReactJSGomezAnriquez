@@ -11,20 +11,21 @@ export const CartContextProvider = ({ children }) => {
     const [totalProducts, setTotalProducts] = useState(0);
 
     const addProductCart = (product, quantity) => {
-
-    const index = cart.findIndex((item) => item.id === product.id);
-    if (index == -1) {
-        const newProduct = {
-        ...product,
-        quantity,
-        subTotal: product.price * quantity,
-        };
-        setCart([...cart, newProduct]);
-    } else {
-        const cartCopy = [...cart];
-        cartCopy[index].quantity += quantity;
-        cartCopy[index].subTotal = cartCopy[index].price * cartCopy[index].quantity;
-        setCart(cartCopy);
+        if(quantity>0){
+            const index = cart.findIndex((item) => item.id === product.id);
+            if (index == -1) {
+                const newProduct = {
+                ...product,
+                quantity,
+                subTotal: product.price * quantity,
+                };
+                setCart([...cart, newProduct]);
+            } else {
+                const cartCopy = [...cart];
+                cartCopy[index].quantity += quantity;
+                cartCopy[index].subTotal = cartCopy[index].price * cartCopy[index].quantity;
+                setCart(cartCopy);
+                }
         }
     };
 
@@ -43,6 +44,13 @@ export const CartContextProvider = ({ children }) => {
         setTotalProducts(items);
     }
 
+    const borrarCart = () => {
+        setCart([]);
+        setTotal(0);
+        setTotalProducts(0);
+        localStorage.removeItem('cart');
+    }
+
     useEffect(() => {
         localStorage.setItem('cart', JSON.stringify(cart));
         handleTotal() 
@@ -56,7 +64,8 @@ export const CartContextProvider = ({ children }) => {
         total,
         totalProducts,
         addProductCart,
-        removeProduct
+        removeProduct,
+        borrarCart
     };
 
     return <CartContext.Provider value={objetValue}> {children} </CartContext.Provider>;
